@@ -44,6 +44,7 @@ const Login: NextPageWithLayout = () => {
         error={fieldHasError("email")}
         value={getFieldValue("email")}
         onChange={(ev) => handleOnChange(ev, "email")}
+        helperText={fieldHasError("email") && "Email Alanı Zorunludur"}
       />
       <TextField
         label="Şifre"
@@ -52,6 +53,7 @@ const Login: NextPageWithLayout = () => {
         error={fieldHasError("password")}
         value={getFieldValue("password")}
         onChange={(ev) => handleOnChange(ev, "password")}
+        helperText={fieldHasError("password") && "Şifre Alanı Zorunludur"}
       />
       <Stack alignItems="end">
         <Button variant="text">Şifremi Unuttum</Button>

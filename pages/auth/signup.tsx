@@ -51,6 +51,7 @@ const Signup: NextPageWithLayout = () => {
         error={fieldHasError("name")}
         value={getFieldValue("name")}
         onChange={(ev) => handleOnChange(ev, "name")}
+        helperText={fieldHasError("name") && "Adı Alanı Zorunludur"}
       />
       <TextField
         label="Soyadın"
@@ -58,6 +59,7 @@ const Signup: NextPageWithLayout = () => {
         error={fieldHasError("surname")}
         value={getFieldValue("surname")}
         onChange={(ev) => handleOnChange(ev, "surname")}
+        helperText={fieldHasError("surname") && "Soyadı Alanı Zorunludur"}
       />
       <TextField
         label="E-mail Adresin"
@@ -65,6 +67,7 @@ const Signup: NextPageWithLayout = () => {
         error={fieldHasError("email")}
         value={getFieldValue("email")}
         onChange={(ev) => handleOnChange(ev, "email")}
+        helperText={fieldHasError("email") && "Email Alanı Zorunludur"}
       />
       <TextField
         label="Şifre"
@@ -73,6 +76,7 @@ const Signup: NextPageWithLayout = () => {
         error={fieldHasError("password")}
         value={getFieldValue("password")}
         onChange={(ev) => handleOnChange(ev, "password")}
+        helperText={fieldHasError("password") && "Şifre Alanı Zorunludur"}
       />
       <Stack alignItems="end">
         <Button variant="text">Şifremi Unuttum</Button>
