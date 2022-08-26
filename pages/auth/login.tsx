@@ -1,29 +1,33 @@
 import { TextField, Button, Stack, Alert } from "@mui/material";
-import React, { FormEvent, ReactElement, useState } from "react";
+import React, { FormEvent, ReactElement } from "react";
 import AuthLayout from "../../components/auth-layout";
 import { useAuth } from "../../hooks/use-auth";
 import { useAuthForm } from "../../hooks/use-auth-form";
 import { LoginModel } from "../../types/auth";
 import { NextPageWithLayout } from "../../types/layout";
-import { CheckCircleOutline, HourglassEmpty } from "@mui/icons-material";
-import Router from "next/router";
+import { HourglassEmpty } from "@mui/icons-material";
 
 const Login: NextPageWithLayout = () => {
-  const [loading, setLoading] = useState(false);
-  const { value, getFieldValue, handleOnChange } = useAuthForm<LoginModel>({
-    email: "",
-    password: "",
-  });
+  const {
+    value,
+    getFieldValue,
+    handleOnChange,
+    fieldHasError,
+    hasAnyError,
+    onSubmit,
+    loading,
+  } = useAuthForm<LoginModel>(
+    {
+      email: "",
+      password: "",
+    },
+    { email: { required: true }, password: { required: true } }
+  );
   const { login } = useAuth();
 
-  const onSubmit = async (event: FormEvent) => {
-    if (loading) return;
-
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    setLoading(true);
-    await login(value);
-    setLoading(false);
-    Router.push("/panel?loggedIn=1");
+    onSubmit(() => login(value));
   };
 
   return (
@@ -32,11 +36,12 @@ const Login: NextPageWithLayout = () => {
       autoComplete="off"
       spacing={2}
       px={2}
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit}
     >
       <TextField
         label="E-mail Adresin"
         disabled={loading}
+        error={fieldHasError("email")}
         value={getFieldValue("email")}
         onChange={(ev) => handleOnChange(ev, "email")}
       />
@@ -44,6 +49,7 @@ const Login: NextPageWithLayout = () => {
         label="Şifre"
         type="password"
         disabled={loading}
+        error={fieldHasError("password")}
         value={getFieldValue("password")}
         onChange={(ev) => handleOnChange(ev, "password")}
       />
@@ -59,6 +65,9 @@ const Login: NextPageWithLayout = () => {
         Giriş Yap
         {loading && <HourglassEmpty />}
       </Button>
+      {hasAnyError() && (
+        <Alert severity="error">Lütfen hatalı alanları kontrol ediniz</Alert>
+      )}
     </Stack>
   );
 };
