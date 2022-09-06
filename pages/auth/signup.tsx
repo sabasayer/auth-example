@@ -1,6 +1,5 @@
 import { TextField, Button, Stack, Alert } from "@mui/material";
-import React, { FormEvent, ReactElement } from "react";
-import AuthLayout from "../../components/auth-layout";
+import { FormEvent } from "react";
 import { useAuth } from "../../hooks/use-auth";
 import { useAuthForm } from "../../hooks/use-auth-form";
 import { RegisterModel } from "../../types/auth";
@@ -95,10 +94,6 @@ const Signup: NextPageWithLayout = () => {
       )}
     </Stack>
   );
-};
-
-Signup.getLayout = function getLayout(page: ReactElement) {
-  return <AuthLayout>{page}</AuthLayout>;
 };
 
 export default Signup;

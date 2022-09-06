@@ -1,29 +1,38 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../hooks/use-auth";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { LayoutProps } from "../types/layout";
 import { Alert, Snackbar } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store/store";
+import { setError, setSuccess } from "../store/slices/userSlice";
 
 const PanelLayout: React.FC<LayoutProps> = ({ children }) => {
   const { isAuthenticated } = useAuth();
+  const [authenticated, setAuthenticated] = useState(false);
   const router = useRouter();
-  const isLoggedIn = !!router.query?.loggedIn;
+  const isLoggedIn = useSelector((state: RootState) => state.success);
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    setAuthenticated(isAuthenticated());
     if (!isAuthenticated()) {
-      Router.push("/auth/login?error=1");
+      dispatch(setError(true));
+      router.push("/auth/login");
     }
-  });
+  }, []);
 
-  return isAuthenticated() ? (
-    <div>
+  const handleClose = () => dispatch(setSuccess(false));
+
+  const style = { display: authenticated ? "block" : "none" };
+
+  return (
+    <div style={style}>
       {children}
-      <Snackbar open={isLoggedIn}>
+      <Snackbar open={isLoggedIn} autoHideDuration={3000} onClose={handleClose}>
         <Alert severity="success">Giriş Başarılı</Alert>
       </Snackbar>
     </div>
-  ) : (
-    <div />
   );
 };
 

@@ -1,5 +1,7 @@
 import Router from "next/router";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { setSuccess } from "../store/slices/userSlice";
 import { LoginModel, RegisterModel } from "../types/auth";
 import { FormErrorMap, FormValidationMap } from "../types/form";
 
@@ -11,6 +13,7 @@ export const useAuthForm = <T extends LoginModel | RegisterModel>(
   const [formError, setFormError] = useState<FormErrorMap>({});
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const dispatch = useDispatch();
 
   const handleOnChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -62,7 +65,8 @@ export const useAuthForm = <T extends LoginModel | RegisterModel>(
     setLoading(true);
     await callback();
     setLoading(false);
-    Router.push("/panel?loggedIn=1");
+    dispatch(setSuccess(true));
+    Router.push("/panel");
   };
 
   return {

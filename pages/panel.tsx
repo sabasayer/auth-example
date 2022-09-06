@@ -1,5 +1,5 @@
-import { Box, Button } from "@mui/material";
-import Router from "next/router";
+import { Box, Button, Typography } from "@mui/material";
+import { useRouter } from "next/router";
 import { ReactElement } from "react";
 import PanelLayout from "../components/panel-layout";
 import { useAuth } from "../hooks/use-auth";
@@ -7,15 +7,18 @@ import { NextPageWithLayout } from "../types/layout";
 
 const Panel: NextPageWithLayout = () => {
   const { logout } = useAuth();
+  const router = useRouter();
 
   const handleClick = () => {
     logout();
-    Router.push("/");
+    router.push("/");
   };
 
   return (
     <Box p={3}>
-      <h1>Panele Hoş Geldiniz</h1>
+      <Typography variant="h1" gutterBottom>
+        Panele Hoş Geldiniz
+      </Typography>
       <Button variant="contained" onClick={handleClick}>
         Çıkış Yap
       </Button>
